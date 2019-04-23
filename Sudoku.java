@@ -12,7 +12,8 @@ public class Sudoku {
     public Sudoku(){
         this.board=new int[9][9];
         this.rs=0;
-
+    }
+    public void fillSudoku(){
         Scanner scan=new Scanner(System.in);
 
         for(int i=0;i<9;i++){       //INICIALIZAMOS SUDOKU
@@ -59,12 +60,13 @@ public class Sudoku {
 
     public static void main(String[] args) {
         Sudoku sudoku=new Sudoku();
+        sudoku.fillSudoku();
         
         solveSudoku(sudoku);       //rs=nº soluciones
         if(sudoku.getRs()==0){
             System.out.print("imposible");
         }
-        else if(sudoku.getRs()==2){
+        else if(sudoku.getRs()>2){
             System.out.println("casi sudoku");
         }
         else{
@@ -74,6 +76,9 @@ public class Sudoku {
     
     public static boolean solveSudoku(Sudoku sudoku){
        for(int r=0;r<9;r++){
+           if(sudoku.getRs()>1){
+                break;
+            }
            for(int c=0;c<9;c++){
                if(sudoku.getVal(r, c)==0){
                    for(int num=1;num<10;num++){
@@ -84,7 +89,9 @@ public class Sudoku {
                                if(sudoku.getRs()>1){
                                    break;
                                }
-                               solucion.add(sudoku);
+                               Sudoku sudAux=new Sudoku();
+                               sudAux.clonSudoku(sudoku);
+                               solucion.add(sudAux);
                                //return true;
                            }
                            //else{
@@ -92,6 +99,9 @@ public class Sudoku {
                            //}
                        }
                    }
+                   if(sudoku.getRs()>1){
+                        break;
+                    }
                    return false;        //no se ha encontrado número que encaje
                }
            }
